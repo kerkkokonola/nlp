@@ -22,13 +22,13 @@ import nltk
 nltk.download('punkt')
 nltk.download('stopwords')
 
-# Load data 
+# Load our new data 
 data_path = 'scopusabstracts.txt'
 
 reader = open(data_path, 'r', encoding='utf-8')
 lines = reader.readlines()
 
-# Extract the text (abstract) from each line
+# Extract the text (title + abstract) from each line
 text = [i.split('#')[1] + i.split('#')[2] for i in lines ] 
 
 # some examples

@@ -17,6 +17,7 @@ from nltk.probability import FreqDist
 from sklearn.feature_extraction.text import TfidfVectorizer
 from string import punctuation
 import numpy as np
+import pandas as pd
 
 import nltk
 
@@ -31,6 +32,7 @@ lines = reader.readlines()
 
 # Extract the text (title + abstract) from each line
 text = [i.split('#')[1] + ' ' + i.split('#')[2] for i in lines[1:]]
+titles = [i.split('#')[1] for i in lines[1:]]
 
 # some examples
 print('First documents:')
@@ -124,9 +126,23 @@ tfidf_vectorizer = TfidfVectorizer(smooth_idf=False)
 tfidf_vectorizer.fit(cleaned_documents)
 tf_idf_vectors = tfidf_vectorizer.transform(cleaned_documents)
 
-print("\nThe tf-idf values of the first document\n");
+print("\nThe tf-idf values of the first document\n")
 feature_names = tfidf_vectorizer.get_feature_names_out()
 feature_index = tf_idf_vectors[0, :].nonzero()[1]
 tfidf_scores = zip(feature_index, [tf_idf_vectors[0, x] for x in feature_index])
 for w, s in [(feature_names[i], s) for (i, s) in tfidf_scores]:
     print(w, s)
+
+print()
+# doesn't match the freq.B() before!! here it is 8k vs. 10k before. Not sure why
+print(len(feature_names), 'unique features')
+
+df = pd.DataFrame(list(tf_idf_vectors.toarray()))
+df.columns = feature_names
+df['_stemmed'] = cleaned_documents
+df['_title'] = titles  # with underscore to avoid coincidence with a 'title' feature
+
+# 7*. export data
+df.to_csv('data.csv', index=False)
+
+print('\ndata exported to data.csv')

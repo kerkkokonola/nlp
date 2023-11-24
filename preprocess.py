@@ -8,6 +8,21 @@
 # Load the required packages that are used in this example.
 
 # Edit / Kerkko: added nltk downloads to run script. Our text list is now the list of titles and abstracts.
+
+
+
+
+
+
+
+# --------- ALL CODE WAS TRANSFERRED INTO preprocessing.ipynb -------------
+
+
+
+
+
+
+
 import re
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
